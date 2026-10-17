@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Quiet Cup — Slow mornings. Good coffee.</title>
+<meta name="description" content="Small-batch coffee, fresh bakes, and a corner table with your name on it.">
+
+<!-- FONTS: to use different fonts, change this link AND the two font names in SITE.theme below -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:ital,wght@0,500;0,700;1,500&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg:#FAF3E8; --surface:#FFFFFF; --text:#3B2A20; --muted:#7A6757;
+    --accent:#C2603A; --accent-text:#FFFFFF; --dark:#2B1D15;
+    --heading:'Playfair Display', Georgia, serif;
+    --body:'Inter', system-ui, sans-serif;
+    --line:rgba(59,42,32,.12);
+    --radius:20px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:var(--body);background:var(--bg);color:var(--text);line-height:1.65;-webkit-font-smoothing:antialiased}
+  img{max-width:100%;display:block}
+  a{color:inherit}
+  .container{width:min(1120px,92%);margin-inline:auto}
+  section{padding:88px 0}
+  h1,h2,h3{font-family:var(--heading);line-height:1.15;font-weight:700}
+  h2{font-size:clamp(1.9rem,4vw,2.7rem);margin-bottom:14px}
+  .eyebrow{display:inline-block;font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:600;margin-bottom:12px}
+  .lead{color:var(--muted);font-size:1.08rem;max-width:620px}
+
+  /* Buttons */
+  .btn{display:inline-block;padding:14px 26px;border-radius:999px;font-weight:600;font-size:.97rem;text-decoration:none;border:2px solid transparent;cursor:pointer;transition:transform .15s ease, box-shadow .15s ease, background .15s ease;font-family:var(--body)}
+  .btn:hover{transform:translateY(-2px)}
+  .btn-primary{background:var(--accent);color:var(--accent-text);box-shadow:0 8px 22px -10px var(--accent)}
+  .btn-ghost{border-color:var(--text);color:var(--text);background:transparent}
+  .btn-ghost:hover{background:var(--text);color:var(--bg)}
+
+  /* Navigation */
+  .nav{position:sticky;top:0;z-index:50;background:var(--bg);border-bottom:1px solid var(--line)}
+  .nav-inner{display:flex;align-items:center;justify-content:space-between;height:70px}
+  .logo{font-family:var(--heading);font-size:1.4rem;font-weight:700;text-decoration:none;display:flex;align-items:center;gap:10px}
+  .logo-mark{width:34px;height:34px;border-radius:50%;background:var(--accent);color:var(--accent-text);display:grid;place-items:center;font-size:1rem}
+  .nav-links{display:flex;gap:30px;list-style:none;align-items:center}
+  .nav-links a{text-decoration:none;font-size:.95rem;font-weight:500;color:var(--muted);transition:color .15s}
+  .nav-links a:hover{color:var(--text)}
+  .nav-links .btn{padding:10px 20px;color:var(--accent-text)}
+  .burger{display:none;background:none;border:0;cursor:pointer;width:42px;height:42px}
+  .burger span{display:block;width:24px;height:2px;background:var(--text);margin:5px auto;transition:.2s}
+
+  /* Hero */
+  .hero{padding:72px 0 96px}
+  .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center}
+  .badge{display:inline-flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--line);padding:7px 14px;border-radius:999px;font-size:.85rem;color:var(--muted);margin-bottom:22px}
+  .badge::before{content:"";width:8px;height:8px;border-radius:50%;background:#3FA66B}
+  .hero h1{font-size:clamp(2.6rem,6.2vw,4.6rem);letter-spacing:-.01em;margin-bottom:20px}
+  .hero h1 em{color:var(--accent);font-style:italic;font-weight:500}
+  .hero p{color:var(--muted);font-size:1.15rem;max-width:520px;margin-bottom:32px}
+  .hero-actions{display:flex;gap:14px;flex-wrap:wrap}
+  .hero-visual{position:relative;aspect-ratio:1/1.05;border-radius:34px;overflow:hidden;background:linear-gradient(145deg,var(--accent),var(--dark));box-shadow:0 30px 60px -30px rgba(0,0,0,.45)}
+  .hero-visual img{width:100%;height:100%;object-fit:cover}
+  .hero-visual svg{position:absolute;inset:0;width:100%;height:100%}
+  .hero-note{position:absolute;left:18px;bottom:18px;background:var(--surface);color:var(--text);padding:12px 16px;border-radius:14px;font-size:.88rem;box-shadow:0 10px 30px -12px rgba(0,0,0,.4)}
+  .hero-note strong{display:block;font-family:var(--heading);font-size:1.05rem}
+
+  /* About */
+  .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start}
+  .about p{color:var(--muted);margin-bottom:16px;font-size:1.05rem}
+  .cards{display:grid;gap:16px}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:22px 24px;display:flex;gap:18px;align-items:flex-start}
+  .card .icon{font-size:1.7rem;line-height:1}
+  .card h3{font-size:1.15rem;margin-bottom:4px}
+  .card p{margin:0;font-size:.95rem}
+
+  /* Menu */
+  .menu{background:var(--surface);border-block:1px solid var(--line)}
+  .menu-head{text-align:center;margin-bottom:36px}
+  .menu-head .lead{margin-inline:auto}
+  .tabs{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:40px}
+  .tab{padding:10px 22px;border-radius:999px;border:1.5px solid var(--line);background:transparent;color:var(--muted);font-weight:600;font-size:.93rem;cursor:pointer;font-family:var(--body);transition:.15s}
+  .tab:hover{color:var(--text);border-color:var(--text)}
+  .tab.active{background:var(--accent);border-color:var(--accent);color:var(--accent-text)}
+  .menu-list{display:grid;grid-template-columns:1fr 1fr;gap:6px 56px}
+  .item{padding:16px 0;border-bottom:1px dashed var(--line)}
+  .item-top{display:flex;align-items:baseline;gap:10px}
+  .item-name{font-family:var(--heading);font-size:1.2rem;font-weight:700}
+  .item-dots{flex:1;border-bottom:2px dotted var(--line);transform:translateY(-4px)}
+  .item-price{font-weight:600;color:var(--accent)}
+  .item-desc{color:var(--muted);font-size:.94rem;margin-top:2px}
+  .menu-note{text-align:center;color:var(--muted);font-size:.9rem;margin-top:30px}
+
+  /* Gallery */
+  .gallery-head{margin-bottom:36px}
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);grid-auto-rows:230px;gap:16px}
+  .tile{position:relative;border-radius:var(--radius);overflow:hidden;background:var(--dark)}
+  .tile:nth-child(1){grid-row:span 2}
+  .tile:nth-child(4){grid-column:span 2}
+  .tile img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease}
+  .tile:hover img{transform:scale(1.05)}
+  .tile .ph{position:absolute;inset:0;display:flex;align-items:flex-end;padding:18px;color:#fff;font-family:var(--heading);font-style:italic;font-size:1.1rem}
+  .tile:nth-child(6n+1) .ph{background:linear-gradient(160deg,#C2603A,#6B2F1A)}
+  .tile:nth-child(6n+2) .ph{background:linear-gradient(160deg,#D9A66B,#8A5A2B)}
+  .tile:nth-child(6n+3) .ph{background:linear-gradient(160deg,#7A5C45,#2B1D15)}
+  .tile:nth-child(6n+4) .ph{background:linear-gradient(160deg,#E2B58E,#B5694A)}
+  .tile:nth-child(6n+5) .ph{background:linear-gradient(160deg,#A8744C,#47291A)}
+  .tile:nth-child(6n+6) .ph{background:linear-gradient(160deg,#CF8A5E,#7B3A22)}
+
+  /* Visit + contact */
+  .visit{background:var(--surface);border-top:1px solid var(--line)}
+  .visit-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start}
+  .info-block{margin-top:26px}
+  .info-block h3{font-size:1.1rem;margin-bottom:10px}
+  .info-block p{color:var(--muted)}
+  .info-block a{color:var(--accent);text-decoration:none;font-weight:500}
+  .hours{width:100%;border-collapse:collapse}
+  .hours td{padding:9px 0;border-bottom:1px solid var(--line);font-size:.97rem}
+  .hours td:last-child{text-align:right;color:var(--muted)}
+  .hours tr.today td{color:var(--accent);font-weight:600}
+  .hours tr.today td:first-child::after{content:" · today";font-weight:500;font-size:.8rem}
+  .map{margin-top:24px;border-radius:var(--radius);overflow:hidden;border:1px solid var(--line)}
+  .map iframe{width:100%;height:260px;border:0;display:block}
+  .form{background:var(--bg);border:1px solid var(--line);border-radius:28px;padding:34px}
+  .form h3{font-size:1.5rem;margin-bottom:6px}
+  .form > p{color:var(--muted);margin-bottom:22px;font-size:.97rem}
+  .field{margin-bottom:16px}
+  .field label{display:block;font-size:.85rem;font-weight:600;margin-bottom:6px}
+  .field input,.field textarea{width:100%;padding:13px 15px;border-radius:12px;border:1.5px solid var(--line);background:var(--surface);font:inherit;color:var(--text);transition:border-color .15s}
+  .field input:focus,.field textarea:focus{outline:none;border-color:var(--accent)}
+  .field textarea{min-height:110px;resize:vertical}
+  .row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .status{margin-top:14px;font-size:.93rem;font-weight:500;color:var(--accent);min-height:1.2em}
+
+  /* Footer */
+  footer{background:var(--dark);color:#E9DDD1;padding:56px 0 34px}
+  .foot{display:flex;justify-content:space-between;gap:30px;flex-wrap:wrap;align-items:flex-start}
+  .foot .logo{color:#fff;margin-bottom:10px}
+  .foot p{color:#B9A99A;max-width:340px;font-size:.93rem}
+  .socials{display:flex;gap:18px;flex-wrap:wrap}
+  .socials a{color:#E9DDD1;text-decoration:none;font-weight:500;font-size:.95rem;border-bottom:1px solid rgba(255,255,255,.25)}
+  .socials a:hover{color:#fff;border-color:#fff}
+  .copy{margin-top:40px;padding-top:22px;border-top:1px solid rgba(255,255,255,.12);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:.85rem;color:#9C8B7C}
+
+  /* Scroll reveal (only active when JS is running) */
+  .js .reveal{opacity:0;transform:translateY(22px);transition:opacity .7s ease, transform .7s ease}
+  .js .reveal.in{opacity:1;transform:none}
+  @media (prefers-reduced-motion:reduce){.js .reveal{opacity:1;transform:none;transition:none}html{scroll-behavior:auto}}
+
+  /* Mobile */
+  @media (max-width:880px){
+    section{padding:64px 0}
+    .hero{padding:44px 0 64px}
+    .hero-grid,.about-grid,.visit-grid{grid-template-columns:1fr;gap:36px}
+    .hero-visual{aspect-ratio:4/3.4;order:-1}
+    .menu-list{grid-template-columns:1fr}
+    .grid{grid-template-columns:1fr 1fr;grid-auto-rows:170px}
+    .tile:nth-child(1){grid-row:span 1}
+    .tile:nth-child(4){grid-column:span 1}
+    .row{grid-template-columns:1fr}
+    .burger{display:block}
+    .nav-links{position:absolute;top:70px;left:0;right:0;background:var(--bg);flex-direction:column;gap:0;padding:8px 4% 20px;border-bottom:1px solid var(--line);display:none}
+    .nav-links.open{display:flex}
+    .nav-links li{width:100%}
+    .nav-links a{display:block;padding:14px 0;border-bottom:1px solid var(--line)}
+    .nav-links .btn{text-align:center;margin-top:14px;border:0}
+    .form{padding:26px 22px}
+  }
+</style>
+</head>
+<body>
+<div id="app"></div>
+
+<script>
+/* ==========================================================================
+   EDIT EVERYTHING HERE
+   This block controls the whole website. Change the text between the quotes,
+   save the file, refresh the page. You do not need to touch the code below.
+   ========================================================================== */
+const SITE = {
+
+  /* ---- Colors & fonts ---------------------------------------------------
+     Use any hex color. Font names must match the Google Fonts <link> above. */
+  theme: {
+    bg:         "#FAF3E8",   // page background
+    surface:    "#FFFFFF",   // cards / alternating sections
+    text:       "#3B2A20",   // main text
+    muted:      "#7A6757",   // softer text
+    accent:     "#C2603A",   // buttons, highlights
+    accentText: "#FFFFFF",   // text on accent buttons
+    dark:       "#2B1D15",   // footer + hero gradient end
+    headingFont:"'Playfair Display', Georgia, serif",
+    bodyFont:   "'Inter', system-ui, sans-serif"
+  },
+
+  /* ---- Business ---------------------------------------------------------*/
+  business: {
+    name:    "The Quiet Cup",
+    logoLetter: "Q",                       // small circle next to the name
+    seoTitle: "The Quiet Cup — Slow mornings. Good coffee.",
+    seoDescription: "Small-batch coffee, fresh bakes, and a corner table with your name on it.",
+    address: "12 Willow Street, Your City",
+    phone:   "+1 555 010 2030",
+    email:   "hello@example.com"
+  },
+
+  /* ---- Top of page ------------------------------------------------------
+     Wrap a word in *stars* to color it with your accent color.             */
+  hero: {
+    badge:    "Open daily · Fresh bakes from 7:30",
+    headline: "Slow mornings. *Good coffee.*",
+    text:     "Small-batch coffee, fresh bakes, and a corner table with your name on it.",
+    primaryButton:   { label: "View Menu", link: "#menu" },
+    secondaryButton: { label: "Visit Us",  link: "#visit" },
+    image: "",                              // paste a photo URL or file path; empty = illustration
+    noteTitle: "Today's special",
+    noteText:  "Cardamom bun + flat white"  // leave "" to hide the little card
+  },
+
+  /* ---- About ------------------------------------------------------------*/
+  about: {
+    eyebrow: "Our story",
+    title:   "A café that feels like a pause",
+    paragraphs: [
+      "The Quiet Cup started with one idea: a café that feels like a pause. We roast in small batches, bake every morning, and keep the music low so you can read, work, or just sit.",
+      "Whether you're grabbing a flat white on the way to work or staying all afternoon, there's always a seat for you."
+    ],
+    highlights: [
+      { icon: "☕", title: "Small-batch coffee", text: "Roasted in small lots and pulled fresh, never rushed." },
+      { icon: "🥐", title: "Baked every morning", text: "Croissants, buns, and loaves out of the oven before we open." },
+      { icon: "📖", title: "Stay a while", text: "Free Wi-Fi, soft light, and plenty of corners to settle in." }
+    ]
+  },
+
+  /* ---- Menu -------------------------------------------------------------
+     Add or remove categories and items freely.                             */
+  menu: {
+    eyebrow: "The menu",
+    title:   "Made fresh, served warm",
+    text:    "Everything is made in-house. Ask us about oat, almond, or soy milk.",
+    currency: "$",
+    note: "Prices may change. Please tell us about any allergies.",
+    categories: [
+      { name: "Coffee", items: [
+        { name: "Flat White",       desc: "Double shot, silky steamed milk", price: "4.50" },
+        { name: "Honey Oat Latte",  desc: "Espresso, oat milk, local honey", price: "5.25" },
+        { name: "Cold Brew",        desc: "Steeped 18 hours, served over ice", price: "4.75" },
+        { name: "Masala Chai",      desc: "House spice blend, slow simmered", price: "4.25" },
+        { name: "Espresso",         desc: "Single or double, rich and bright", price: "3.25" },
+        { name: "Hot Chocolate",    desc: "Dark chocolate, steamed milk", price: "4.50" }
+      ]},
+      { name: "Bakes & Bites", items: [
+        { name: "Butter Croissant",   desc: "Baked fresh each morning", price: "3.75" },
+        { name: "Cardamom Bun",       desc: "Soft, sticky, lightly spiced", price: "4.00" },
+        { name: "Avocado Toast",      desc: "Sourdough, lemon, chili flakes", price: "9.50" },
+        { name: "Banana Walnut Loaf", desc: "Thick slice, served warm", price: "4.50" },
+        { name: "Cheese Toastie",     desc: "Sourdough, three cheeses, pickle", price: "8.50" },
+        { name: "Granola Bowl",       desc: "Yogurt, seasonal fruit, honey", price: "7.50" }
+      ]},
+      { name: "Cold Drinks", items: [
+        { name: "Iced Latte",       desc: "Espresso, milk, ice", price: "4.75" },
+        { name: "Fresh Lemonade",   desc: "Lemon, mint, a little sugar", price: "4.00" },
+        { name: "Iced Chai",        desc: "House chai over ice", price: "4.50" },
+        { name: "Sparkling Water",  desc: "With lime", price: "2.50" }
+      ]}
+    ]
+  },
+
+  /* ---- Gallery ----------------------------------------------------------
+     Paste a photo URL (or a file path like "images/latte.jpg") in src.
+     Leave src empty to show a colored placeholder with the caption.        */
+  gallery: {
+    eyebrow: "A look inside",
+    title:   "Come as you are",
+    images: [
+      { src: "", alt: "Latte art" },
+      { src: "", alt: "Fresh croissants" },
+      { src: "", alt: "The corner table" },
+      { src: "", alt: "Morning light at the counter" },
+      { src: "", alt: "Cardamom buns" },
+      { src: "", alt: "Cold brew on ice" }
+    ]
+  },
+
+  /* ---- Opening hours (starts Monday; today is highlighted) ---------------*/
+  hours: [
+    { day: "Monday",    time: "7:30 AM – 6:00 PM" },
+    { day: "Tuesday",   time: "7:30 AM – 6:00 PM" },
+    { day: "Wednesday", time: "7:30 AM – 6:00 PM" },
+    { day: "Thursday",  time: "7:30 AM – 6:00 PM" },
+    { day: "Friday",    time: "7:30 AM – 6:00 PM" },
+    { day: "Saturday",  time: "8:30 AM – 5:00 PM" },
+    { day: "Sunday",    time: "8:30 AM – 5:00 PM" }
+  ],
+
+  /* ---- Visit & contact form ----------------------------------------------
+     mapEmbedUrl: Google Maps → Share → Embed a map → copy the src="..." URL.
+       Leave "" to show a "Get directions" link instead.
+     formEndpoint: create a free form at formspree.io and paste the URL
+       (looks like https://formspree.io/f/xxxxxxx). Leave "" and the form
+       will open the visitor's email app addressed to business.email.       */
+  contact: {
+    eyebrow: "Visit us",
+    title:   "Find your corner",
+    mapEmbedUrl: "",
+    formTitle: "Planning a visit or a small event?",
+    formText:  "Tell us your date and group size, and we'll get back within a day.",
+    formEndpoint: "",
+    buttonLabel: "Send message",
+    successMessage: "Thank you! We'll be in touch soon.",
+    errorMessage:   "Something went wrong. Please try again or email us directly."
+  },
+
+  /* ---- Footer ------------------------------------------------------------*/
+  footer: {
+    text: "Coffee, bakes, and a quiet corner.",
+    socials: [
+      { label: "Instagram", url: "#" },
+      { label: "Facebook",  url: "#" }
+    ],
+    demoNote: "Demo website designed by Nimbus Pages"   // set to "" to hide
+  }
+};
+
+/* ==========================================================================
+   Below this line is the engine. You can leave it alone.
+   ========================================================================== */
+(function () {
+  document.documentElement.classList.add("js");
+
+  const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => (
+    { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const withAccent = s => esc(s).replace(/\*(.+?)\*/g, "<em>$1</em>");
+
+  /* theme */
+  const t = SITE.theme, root = document.documentElement.style;
+  root.setProperty("--bg", t.bg);           root.setProperty("--surface", t.surface);
+  root.setProperty("--text", t.text);       root.setProperty("--muted", t.muted);
+  root.setProperty("--accent", t.accent);   root.setProperty("--accent-text", t.accentText);
+  root.setProperty("--dark", t.dark);
+  root.setProperty("--heading", t.headingFont); root.setProperty("--body", t.bodyFont);
+
+  /* SEO */
+  document.title = SITE.business.seoTitle || SITE.business.name;
+  const md = document.querySelector('meta[name="description"]');
+  if (md) md.setAttribute("content", SITE.business.seoDescription || "");
+
+  const b = SITE.business, h = SITE.hero, a = SITE.about, m = SITE.menu,
+        g = SITE.gallery, c = SITE.contact, f = SITE.footer;
+
+  const mapsLink = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(b.address);
+
+  const heroArt = h.image
+    ? `<img src="${esc(h.image)}" alt="${esc(b.name)}">`
+    : `<svg viewBox="0 0 400 420" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+         <circle cx="200" cy="215" r="150" fill="rgba(255,255,255,.08)"/>
+         <circle cx="200" cy="215" r="105" fill="rgba(255,255,255,.08)"/>
+         <path d="M120 190h160v70a60 60 0 0 1-60 60h-40a60 60 0 0 1-60-60z" fill="#FAF3E8"/>
+         <path d="M280 205h22a30 30 0 0 1 0 60h-26" fill="none" stroke="#FAF3E8" stroke-width="14" stroke-linecap="round"/>
+         <ellipse cx="200" cy="190" rx="80" ry="12" fill="#6B2F1A"/>
+         <path d="M175 160c-14-18 14-26 0-46M205 158c-14-18 14-26 0-46M235 160c-14-18 14-26 0-46" fill="none" stroke="rgba(255,255,255,.7)" stroke-width="7" stroke-linecap="round"/>
+         <ellipse cx="200" cy="350" rx="105" ry="12" fill="rgba(0,0,0,.18)"/>
+       </svg>`;
+
+  const heroNote = h.noteTitle || h.noteText
+    ? `<div class="hero-note"><strong>${esc(h.noteTitle)}</strong>${esc(h.noteText)}</div>` : "";
+
+  const todayIdx = (new Date().getDay() + 6) % 7;
+  const hoursRows = SITE.hours.map((r, i) =>
+    `<tr class="${i === todayIdx ? "today" : ""}"><td>${esc(r.day)}</td><td>${esc(r.time)}</td></tr>`).join("");
+
+  const mapBlock = c.mapEmbedUrl
+    ? `<div class="map"><iframe src="${esc(c.mapEmbedUrl)}" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Map"></iframe></div>`
+    : "";
+
+  const galleryTiles = g.images.map(img => img.src
+    ? `<div class="tile"><img src="${esc(img.src)}" alt="${esc(img.alt)}" loading="lazy"></div>`
+    : `<div class="tile"><div class="ph">${esc(img.alt)}</div></div>`).join("");
+
+  const socials = f.socials.map(s => `<a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.label)}</a>`).join("");
+
+  document.getElementById("app").innerHTML = `
+  <header class="nav">
+    <div class="container nav-inner">
+      <a class="logo" href="#home"><span class="logo-mark">${esc(b.logoLetter)}</span>${esc(b.name)}</a>
+      <button class="burger" id="burger" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#about">About</a></li>
+        <li><a href="#menu">Menu</a></li>
+        <li><a href="#gallery">Gallery</a></li>
+        <li><a href="#visit">Visit</a></li>
+        <li><a class="btn btn-primary" href="${esc(h.primaryButton.link)}">${esc(h.primaryButton.label)}</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="home">
+      <div class="container hero-grid">
+        <div class="reveal">
+          <span class="badge">${esc(h.badge)}</span>
+          <h1>${withAccent(h.headline)}</h1>
+          <p>${esc(h.text)}</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="${esc(h.primaryButton.link)}">${esc(h.primaryButton.label)}</a>
+            <a class="btn btn-ghost" href="${esc(h.secondaryButton.link)}">${esc(h.secondaryButton.label)}</a>
+          </div>
+        </div>
+        <div class="hero-visual reveal">${heroArt}${heroNote}</div>
+      </div>
+    </section>
+
+    <section class="about" id="about">
+      <div class="container about-grid">
+        <div class="reveal">
+          <span class="eyebrow">${esc(a.eyebrow)}</span>
+          <h2>${esc(a.title)}</h2>
+          ${a.paragraphs.map(p => `<p>${esc(p)}</p>`).join("")}
+        </div>
+        <div class="cards reveal">
+          ${a.highlights.map(x => `
+            <div class="card"><div class="icon">${esc(x.icon)}</div>
+              <div><h3>${esc(x.title)}</h3><p>${esc(x.text)}</p></div></div>`).join("")}
+        </div>
+      </div>
+    </section>
+
+    <section class="menu" id="menu">
+      <div class="container">
+        <div class="menu-head reveal">
+          <span class="eyebrow">${esc(m.eyebrow)}</span>
+          <h2>${esc(m.title)}</h2>
+          <p class="lead">${esc(m.text)}</p>
+        </div>
+        <div class="tabs reveal" id="tabs">
+          ${m.categories.map((cat, i) => `<button class="tab ${i === 0 ? "active" : ""}" data-i="${i}">${esc(cat.name)}</button>`).join("")}
+        </div>
+        <div class="menu-list" id="menuList"></div>
+        ${m.note ? `<p class="menu-note">${esc(m.note)}</p>` : ""}
+      </div>
+    </section>
+
+    <section class="gallery" id="gallery">
+      <div class="container">
+        <div class="gallery-head reveal">
+          <span class="eyebrow">${esc(g.eyebrow)}</span>
+          <h2>${esc(g.title)}</h2>
+        </div>
+        <div class="grid reveal">${galleryTiles}</div>
+      </div>
+    </section>
+
+    <section class="visit" id="visit">
+      <div class="container visit-grid">
+        <div class="reveal">
+          <span class="eyebrow">${esc(c.eyebrow)}</span>
+          <h2>${esc(c.title)}</h2>
+          <div class="info-block">
+            <h3>Find us</h3>
+            <p>${esc(b.address)}<br><a href="${mapsLink}" target="_blank" rel="noopener">Get directions →</a></p>
+          </div>
+          <div class="info-block">
+            <h3>Say hello</h3>
+            <p><a href="tel:${esc(b.phone.replace(/\s+/g, ""))}">${esc(b.phone)}</a><br><a href="mailto:${esc(b.email)}">${esc(b.email)}</a></p>
+          </div>
+          <div class="info-block">
+            <h3>Opening hours</h3>
+            <table class="hours">${hoursRows}</table>
+          </div>
+          ${mapBlock}
+        </div>
+        <form class="form reveal" id="contactForm">
+          <h3>${esc(c.formTitle)}</h3>
+          <p>${esc(c.formText)}</p>
+          <div class="row">
+            <div class="field"><label for="f-name">Name</label><input id="f-name" name="name" required></div>
+            <div class="field"><label for="f-email">Email</label><input id="f-email" name="email" type="email" required></div>
+          </div>
+          <div class="row">
+            <div class="field"><label for="f-date">Date</label><input id="f-date" name="date" type="date"></div>
+            <div class="field"><label for="f-size">Group size</label><input id="f-size" name="group_size" type="number" min="1" placeholder="e.g. 4"></div>
+          </div>
+          <div class="field"><label for="f-msg">Message</label><textarea id="f-msg" name="message" required></textarea></div>
+          <button class="btn btn-primary" type="submit">${esc(c.buttonLabel)}</button>
+          <div class="status" id="formStatus" role="status"></div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="foot">
+        <div>
+          <a class="logo" href="#home"><span class="logo-mark">${esc(b.logoLetter)}</span>${esc(b.name)}</a>
+          <p>${esc(f.text)}</p>
+        </div>
+        <div class="socials">${socials}</div>
+      </div>
+      <div class="copy">
+        <span>© ${new Date().getFullYear()} ${esc(b.name)}. All rights reserved.</span>
+        ${f.demoNote ? `<span>${esc(f.demoNote)}</span>` : ""}
+      </div>
+    </div>
+  </footer>`;
+
+  /* menu tabs */
+  const list = document.getElementById("menuList");
+  function showCategory(i) {
+    list.innerHTML = m.categories[i].items.map(it => `
+      <div class="item">
+        <div class="item-top"><span class="item-name">${esc(it.name)}</span><span class="item-dots"></span><span class="item-price">${esc(m.currency)}${esc(it.price)}</span></div>
+        <div class="item-desc">${esc(it.desc)}</div>
+      </div>`).join("");
+  }
+  showCategory(0);
+  document.getElementById("tabs").addEventListener("click", e => {
+    const btn = e.target.closest(".tab"); if (!btn) return;
+    document.querySelectorAll(".tab").forEach(x => x.classList.remove("active"));
+    btn.classList.add("active");
+    showCategory(+btn.dataset.i);
+  });
+
+  /* mobile menu */
+  const burger = document.getElementById("burger"), links = document.getElementById("navLinks");
+  burger.addEventListener("click", () => {
+    const open = links.classList.toggle("open");
+    burger.setAttribute("aria-expanded", open);
+  });
+  links.addEventListener("click", e => { if (e.target.tagName === "A") links.classList.remove("open"); });
+
+  /* contact form */
+  const form = document.getElementById("contactForm"), status = document.getElementById("formStatus");
+  form.addEventListener("submit", async e => {
+    e.preventDefault();
+    const data = new FormData(form);
+    if (c.formEndpoint) {
+      try {
+        const r = await fetch(c.formEndpoint, { method: "POST", body: data, headers: { Accept: "application/json" } });
+        if (!r.ok) throw new Error("bad response");
+        form.reset(); status.textContent = c.successMessage;
+      } catch (err) { status.textContent = c.errorMessage; }
+    } else {
+      const body = [...data.entries()].filter(([, v]) => v).map(([k, v]) => k.replace("_", " ") + ": " + v).join("\n");
+      location.href = "mailto:" + b.email + "?subject=" + encodeURIComponent("Message from " + data.get("name")) + "&body=" + encodeURIComponent(body);
+    }
+  });
+
+  /* scroll reveal */
+  const items = document.querySelectorAll(".reveal");
+  if ("IntersectionObserver" in window) {
+    const io = new IntersectionObserver(es => es.forEach(en => {
+      if (en.isIntersecting) { en.target.classList.add("in"); io.unobserve(en.target); }
+    }), { threshold: 0.12 });
+    items.forEach(el => io.observe(el));
+  } else { items.forEach(el => el.classList.add("in")); }
+})();
+</script>
+</body>
+</html>
